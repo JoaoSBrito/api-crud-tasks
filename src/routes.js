@@ -64,23 +64,24 @@ export const routes = [
       database.update('tasks', id, {
         title,
         description,
+        updated_at: new Date(),
       })
-
-      database.delete('tasks', id)
 
         return response.writeHead(204).end()
     }
   },
 
-  // {
-  //   method: 'DELETE',
-  //   path: buildRoutePath('/tasks/:id'),
-  //   handler: (request, response) => {
-  //     const { id } = request.params
+  {
+    method: 'PATCH',
+    path: buildRoutePath('/tasks/:id/complete'),
+    handler: (request, response) => {
+      const { id } = request.params
 
-  //     database.delete('tasks', id)
+      database.update('tasks', id, {
+        completed_at: new Date(),
+      })
 
-  //       return response.writeHead(204).end()
-  //   }
-  // },
+        return response.writeHead(204).end()
+    }
+  },
 ]
