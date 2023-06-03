@@ -54,7 +54,10 @@ export class Database {
     if( rowIndex > -1) {
       this.#database[table].splice(rowIndex, 1)
       this.#persist()
+      return true
     }
+    return false
+
   }
 
   update(table, id, data) {
@@ -64,7 +67,10 @@ export class Database {
       const row = this.#database[table][rowIndex]
       this.#database[table][rowIndex] = {id,...row, ...data}
       this.#persist()
+      return true
     }
+
+    return false
 
   }
 }

@@ -26,6 +26,9 @@ export const routes = [
     method: 'POST',
     path: buildRoutePath('/tasks'),
     handler: (request, response) => {
+      if (!request.body || Object.keys(request.body).length === 0) {
+        return response.writeHead(400).end(JSON.stringify('Empty request body'))
+      }
       const { title, description } = request.body
 
       const task = {
@@ -48,9 +51,11 @@ export const routes = [
     handler: (request, response) => {
       const { id } = request.params
 
-      database.delete('tasks', id)
-
+      if(database.delete('tasks',id )) {
         return response.writeHead(204).end()
+      } else {
+        return response.writeHead(404).end(JSON.stringify('ID not found'))
+      }
     }
   },
 
@@ -58,16 +63,17 @@ export const routes = [
     method: 'PUT',
     path: buildRoutePath('/tasks/:id'),
     handler: (request, response) => {
+      if (!request.body || Object.keys(request.body).length === 0) {
+        return response.writeHead(400).end(JSON.stringify('Empty request body'))
+      }
       const { id } = request.params
       const { title, description } = request.body
 
-      database.update('tasks', id, {
-        title,
-        description,
-        updated_at: new Date(),
-      })
-
+      if (database.update('tasks', id, { title, description, updated_at: new Date()})) {
         return response.writeHead(204).end()
+      } else {
+        return response.writeHead(404).end(JSON.stringify('ID not found'))
+      }
     }
   },
 
@@ -77,11 +83,12 @@ export const routes = [
     handler: (request, response) => {
       const { id } = request.params
 
-      database.update('tasks', id, {
-        completed_at: new Date(),
-      })
-
+      if(database.update('tasks', id ,{completed_at: new Date()})) {
         return response.writeHead(204).end()
+      } else {
+        return response.writeHead(404).end(JSON.stringify('ID not found'))
+      }
+        
     }
   },
 ]
