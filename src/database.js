@@ -2,9 +2,13 @@ import fs from 'node:fs/promises'
 
 const databasePath = new URL('../db.json', import.meta.url)
 
+// Create database class as a module
 export class Database {
+
+  // Private field that stores the data
   #database ={}
 
+  // Read the databasePath File and convert it into a Object JS and assigned to the #database.
   constructor() {
     fs.readFile(databasePath, 'utf8')
       .then(data => {
@@ -15,10 +19,13 @@ export class Database {
       })
   }
   
+  // private filed that stores the content of the database in a JSON File
   #persist() {
     fs.writeFile(databasePath, JSON.stringify(this.#database, null, 2))
   }
 
+
+  // Method who receives the name and a object "search" and returns the corresponding data.
   select(table, search) {
     let data = this.#database[table] ?? []
 
@@ -35,6 +42,7 @@ export class Database {
     return data
   }
 
+  // Method who receives the name and a object "data" and inserts the data into the database.
   insert(table, data){
     if(Array.isArray(this.#database[table])){
       this.#database[table].push(data)
@@ -47,7 +55,9 @@ export class Database {
 
     return data;
   } 
-  
+
+
+  // Method who receives the name and the ID and deletes the task who the ID's corresponding. Also return true/ false depending on the results
   delete(table, id) {
     const rowIndex = this.#database[table].findIndex(row => row.id === id) 
 
@@ -60,6 +70,7 @@ export class Database {
 
   }
 
+  // Method who receives the name, id and the object "data" and update the task who the ID's corresponding. Also return true/ false depending on the results
   update(table, id, data) {
     const rowIndex = this.#database[table].findIndex(row => row.id ===id)
 

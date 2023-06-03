@@ -2,10 +2,14 @@ import { Database } from "./database.js";
 import { buildRoutePath } from "./utils/build-route-path.js";
 import { randomUUID } from 'node:crypto'
 
-
+// Creating Database instance
 const database = new Database()
 
+
+// Creating route array
 export const routes = [
+
+  // Search method for show the tasks list
   {
     method: 'GET',
     path: buildRoutePath('/tasks'),
@@ -22,6 +26,7 @@ export const routes = [
     }
   },
 
+  // Post method for post a specific task
   {
     method: 'POST',
     path: buildRoutePath('/tasks'),
@@ -45,6 +50,7 @@ export const routes = [
     }
   },
 
+  // Delete method for delete a specific task using the ID 
   {
     method: 'DELETE',
     path: buildRoutePath('/tasks/:id'),
@@ -59,6 +65,7 @@ export const routes = [
     }
   },
 
+  // Put method for update a specific task using the ID
   {
     method: 'PUT',
     path: buildRoutePath('/tasks/:id'),
@@ -77,6 +84,7 @@ export const routes = [
     }
   },
 
+  // Patch method for update a specific item from a specific task using the ID
   {
     method: 'PATCH',
     path: buildRoutePath('/tasks/:id/complete'),

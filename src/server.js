@@ -4,28 +4,26 @@ import { extractQueryParams } from './utils/extract-query-params.js'
 import { routes } from './routes.js'
 
 
-// criação server 
+// Create a server
 const server = http.createServer( async(request, response) => {
 
-    //DESESTRUTURAÇÃO PARA EXTRAÇAO DO METODO E URL DA REQUISIÇÃO
+    // destructuring and extraction of URL and method from the request
     const { method, url } = request
 
-    //PROCESSAMENTO DO CORPO DA SOLICITAÇÃO
+    //Process the request body
     await json(request, response)
 
-                  //ROTEAMENTO DA SOLICITAÇÃO
+                  //Routing of the request
     const route = routes.find(route => {
       return route.method === method && route.path.test(url)
     })
 
 
-    // MANIPULAÇÃO DA ROTA 
+    // Maniputaltion of the route
     if(route) {
       const routeParams = request.url.match(route.path)
 
       const { query, ...params } = routeParams.groups
-
-      // console.log(extractQueryParams(routeParams.groups.query))
 
       request.params = params 
       request.query = query ? extractQueryParams(query): {}
